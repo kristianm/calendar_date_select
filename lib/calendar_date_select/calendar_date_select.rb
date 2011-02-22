@@ -119,4 +119,18 @@ module CalendarDateSelect
       /[0-9]:[0-9]{2}/.match(value.to_s) ? true : false
     end
   end
+
+  def self.install_files
+    if Rails.root && !Rails.root.blank?
+      unless File.exists?(Rails.root.to_s + '/public/javascripts/calendar_date_select/calendar_date_select.js')
+        puts "Copying calendar_date_select files to /public"
+        ['/public', '/public/javascripts/calendar_date_select', '/public/stylesheets/calendar_date_select', '/public/images/calendar_date_select', '/public/javascripts/calendar_date_select/locale'].each do |dir|
+          source = File.dirname(__FILE__) + "/../../#{dir}"
+          dest = Rails.root.to_s + dir
+          FileUtils.mkdir_p(dest)
+          FileUtils.cp(Dir.glob(source+'/*.*'), dest)
+        end
+      end
+    end
+  end
 end
